@@ -53,6 +53,10 @@ public class GameState : MonoBehaviour
 
         Instance = this;
         _readyView = GetComponent<ReadyView>();
+
+        maxHealth = 8;
+        playerOneHealth = maxHealth;
+        playerTwoHealth = maxHealth;
     }
 
     private void Start()

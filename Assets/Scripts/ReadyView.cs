@@ -101,6 +101,11 @@ public class ReadyView : MonoBehaviour {
         if (startScreen != null) startScreen.SetActive(false);
         if (inMatchScreen != null) inMatchScreen.SetActive(true);
         ShowControlsHud();
+
+        if (GameState.Instance != null) {
+            UpdatePlayerHealth("1", GameState.Instance.playerOneHealth);
+            UpdatePlayerHealth("2", GameState.Instance.playerTwoHealth);
+        }
     }
 
     public void SetInGameOver(string player) {
