@@ -23,6 +23,8 @@ public class ReadyView : MonoBehaviour {
 
     private GameObject _duelPanel;
     private RectTransform _noteLane;
+    private Image _rhythmCloudImage;
+    private GameObject _controlsHud;
     private TextMeshProUGUI _duelPromptText;
     private TextMeshProUGUI _duelScorePlayerOne;
     private TextMeshProUGUI _duelScorePlayerTwo;
@@ -30,8 +32,9 @@ public class ReadyView : MonoBehaviour {
     private TextMeshProUGUI _duelFeedbackPlayerTwo;
     private TextMeshProUGUI _duelResultText;
 
-    private const float NoteSpawnY = 220f;
-    private const float NoteHitY = -40f;
+    private const float CloudY = 260f;
+    private const float NoteSpawnY = 170f;
+    private const float NoteHitY = -50f;
 
     private MainMenuView _mainMenuView;
     
@@ -43,6 +46,7 @@ public class ReadyView : MonoBehaviour {
 
         BuildDuelUI();
         BuildMainMenu();
+        BuildControlsHud();
 
         if (GameState.Instance != null && GameState.Instance.gameState == GameState.GameStateEnum.MainMenu)
         {
@@ -57,6 +61,7 @@ public class ReadyView : MonoBehaviour {
         if (inMatchScreen != null) inMatchScreen.SetActive(false);
         if (gameOverScreen != null) gameOverScreen.SetActive(false);
         if (_duelPanel != null) _duelPanel.SetActive(false);
+        HideControlsHud();
     }
 
     public void ShowGetReady()
@@ -65,6 +70,7 @@ public class ReadyView : MonoBehaviour {
         if (startScreen != null) startScreen.SetActive(true);
         if (inMatchScreen != null) inMatchScreen.SetActive(false);
         if (gameOverScreen != null) gameOverScreen.SetActive(false);
+        HideControlsHud();
     }
 
     public void ResetReadyDisplay()
@@ -94,6 +100,7 @@ public class ReadyView : MonoBehaviour {
         if (_mainMenuView != null) _mainMenuView.Hide();
         if (startScreen != null) startScreen.SetActive(false);
         if (inMatchScreen != null) inMatchScreen.SetActive(true);
+        ShowControlsHud();
     }
 
     public void SetInGameOver(string player) {
@@ -102,6 +109,7 @@ public class ReadyView : MonoBehaviour {
         if (inMatchScreen != null) inMatchScreen.SetActive(false);
         if (gameOverScreen != null) gameOverScreen.SetActive(true);
         if (_duelPanel != null) _duelPanel.SetActive(false);
+        HideControlsHud();
         if (playerWins != null) playerWins.text = "Player " + player + " wins!";
     }
 
@@ -121,6 +129,7 @@ public class ReadyView : MonoBehaviour {
     public void ShowRhythmDuel() {
         if (_duelPanel == null) return;
         _duelPanel.SetActive(true);
+        ShowControlsHud();
         _duelResultText.text = "RHYTHM DUEL!";
         ClearLaneNotes();
         ClearFeedback();
@@ -221,6 +230,61 @@ public class ReadyView : MonoBehaviour {
         _mainMenuView.Hide();
     }
 
+    private void BuildControlsHud()
+    {
+        if (_controlsHud != null || startScreen == null) return;
+
+        Transform canvas = startScreen.transform.parent;
+        if (canvas == null) return;
+
+        TMP_FontAsset font = healthPlayerOne != null ? healthPlayerOne.font : null;
+
+        _controlsHud = new GameObject("Controls HUD");
+        _controlsHud.transform.SetParent(canvas, false);
+
+        RectTransform hudRect = _controlsHud.AddComponent<RectTransform>();
+        hudRect.anchorMin = new Vector2(0f, 0f);
+        hudRect.anchorMax = new Vector2(0f, 0f);
+        hudRect.pivot = new Vector2(0f, 0f);
+        hudRect.anchoredPosition = new Vector2(12f, 12f);
+        hudRect.sizeDelta = new Vector2(360f, 150f);
+
+        Image bg = _controlsHud.AddComponent<Image>();
+        bg.color = new Color(0f, 0f, 0f, 0.55f);
+
+        GameObject textObject = new GameObject("Controls Text");
+        textObject.transform.SetParent(_controlsHud.transform, false);
+        RectTransform textRect = textObject.AddComponent<RectTransform>();
+        textRect.anchorMin = Vector2.zero;
+        textRect.anchorMax = Vector2.one;
+        textRect.offsetMin = new Vector2(8f, 8f);
+        textRect.offsetMax = new Vector2(-8f, -8f);
+
+        TextMeshProUGUI label = textObject.AddComponent<TextMeshProUGUI>();
+        label.fontSize = 11;
+        label.alignment = TextAlignmentOptions.TopLeft;
+        label.color = Color.white;
+        label.richText = true;
+        if (font != null) label.font = font;
+        label.text =
+            "<b>CONTROLS</b>\n" +
+            "<color=#88CCFF>P1:</color> WASD move | Space jump | R shoot | Y duel | T special\n" +
+            "<color=#88CCFF>P2:</color> Arrows/IJKL | Shift jump | N shoot | , duel | M special\n" +
+            "<color=#FFEE88>Rhythm:</color> D-pad arrows, left stick, or WASD / IJKL / arrow keys";
+
+        _controlsHud.SetActive(false);
+    }
+
+    private void ShowControlsHud()
+    {
+        if (_controlsHud != null) _controlsHud.SetActive(true);
+    }
+
+    private void HideControlsHud()
+    {
+        if (_controlsHud != null) _controlsHud.SetActive(false);
+    }
+
     private void BuildDuelUI() {
         if (_duelPanel != null || startScreen == null) return;
 
@@ -236,17 +300,33 @@ public class ReadyView : MonoBehaviour {
         panelRect.offsetMax = Vector2.zero;
 
         Image panelBackground = _duelPanel.AddComponent<Image>();
-        panelBackground.color = new Color(0f, 0f, 0f, 0.75f);
+        panelBackground.color = new Color(0f, 0f, 0f, 0.65f);
+
+        Sprite cloudSprite = GameSettings.Instance != null ? GameSettings.Instance.rhythmCloudSprite : null;
+        if (cloudSprite != null)
+        {
+            GameObject cloudObject = new GameObject("Rhythm Cloud");
+            cloudObject.transform.SetParent(_duelPanel.transform, false);
+            RectTransform cloudRect = cloudObject.AddComponent<RectTransform>();
+            cloudRect.anchorMin = new Vector2(0.5f, 0.5f);
+            cloudRect.anchorMax = new Vector2(0.5f, 0.5f);
+            cloudRect.sizeDelta = new Vector2(320f, 160f);
+            cloudRect.anchoredPosition = new Vector2(0f, CloudY);
+
+            _rhythmCloudImage = cloudObject.AddComponent<Image>();
+            _rhythmCloudImage.sprite = cloudSprite;
+            _rhythmCloudImage.preserveAspect = true;
+        }
 
         GameObject laneObject = new GameObject("Note Lane");
         laneObject.transform.SetParent(_duelPanel.transform, false);
         _noteLane = laneObject.AddComponent<RectTransform>();
         _noteLane.anchorMin = new Vector2(0.5f, 0.5f);
         _noteLane.anchorMax = new Vector2(0.5f, 0.5f);
-        _noteLane.sizeDelta = new Vector2(120f, 500f);
-        _noteLane.anchoredPosition = new Vector2(0f, 0f);
+        _noteLane.sizeDelta = new Vector2(120f, 520f);
+        _noteLane.anchoredPosition = new Vector2(0f, 20f);
 
-        _duelResultText = CreateDuelText("RHYTHM DUEL!", 32, new Vector2(0f, 220f));
+        _duelResultText = CreateDuelText("RHYTHM DUEL!", 32, new Vector2(0f, 320f));
         _duelPromptText = CreateDuelText("?", 72, new Vector2(0f, NoteHitY));
         _duelScorePlayerOne = CreateDuelText("P1 score: 0", 24, new Vector2(-220f, -180f));
         _duelScorePlayerTwo = CreateDuelText("P2 score: 0", 24, new Vector2(220f, -180f));

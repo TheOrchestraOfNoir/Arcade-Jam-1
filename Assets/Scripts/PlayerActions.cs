@@ -16,6 +16,7 @@ public class PlayerActions : MonoBehaviour {
     
     private bool _canShoot = true;
     private PlayerBuffs _playerBuffs;
+    private PlayerCharacterVisual _characterVisual;
     
     private void Start()
     {
@@ -25,6 +26,7 @@ public class PlayerActions : MonoBehaviour {
         _rigidbody = GetComponent<Rigidbody2D>();
         _playerWeapon = GetComponent<PlayerWeapon>();
         _playerBuffs = GetComponent<PlayerBuffs>();
+        _characterVisual = GetComponent<PlayerCharacterVisual>();
 
         if (SpecialEffectManager.Instance != null) {
             SpecialEffectManager.Instance.RegisterPlayer(this);
@@ -37,14 +39,6 @@ public class PlayerActions : MonoBehaviour {
         switch (GameState.Instance.gameState) {
             case GameState.GameStateEnum.MainMenu: {
                 MainMenuView menu = FindObjectOfType<MainMenuView>();
-                if (Input.GetKeyDown(KeyCode.LeftBracket) && menu != null)
-                {
-                    menu.AdjustBpm(-5f);
-                }
-                if (Input.GetKeyDown(KeyCode.RightBracket) && menu != null)
-                {
-                    menu.AdjustBpm(5f);
-                }
 
                 bool startPressed = Input.GetKeyDown(KeyCode.Return)
                     || Input.GetKeyDown(KeyCode.KeypadEnter)
@@ -120,13 +114,18 @@ public class PlayerActions : MonoBehaviour {
         currentTime = spawnInterval * GetShootIntervalMultiplier();
         _canShoot = false;
 
+        if (_characterVisual != null)
+        {
+            _characterVisual.PlayShootAnimation();
+        }
+
         Transform spawnPoint = _playerWeapon.weapon.transform;
         GameObject newObject = Instantiate(xObject, spawnPoint.position, spawnPoint.rotation);
 
         Transform sprite = newObject.transform.Find("Sprite");
         if (sprite != null) {
             SpriteRenderer spriteRenderer = sprite.GetComponent<SpriteRenderer>();
-            if (spriteRenderer != null) spriteRenderer.color = bulletColor;
+            if (spriteRenderer != null) spriteRenderer.color = Color.white;
         }
 
         Rigidbody2D bulletBody = newObject.GetComponent<Rigidbody2D>();
@@ -135,6 +134,9 @@ public class PlayerActions : MonoBehaviour {
         BulletController bullet = newObject.GetComponent<BulletController>();
         if (bullet != null) {
             bullet.SetDirection(_playerWeapon.direction);
+
+            Collider2D ownerCollider = GetComponent<Collider2D>();
+            bullet.SetOwner(ownerCollider);
 
             if (BeatConductor.Instance != null && BeatConductor.Instance.IsOnBeat()) {
                 bullet.speed = Mathf.RoundToInt(bullet.speed * 1.5f);

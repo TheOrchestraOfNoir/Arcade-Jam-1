@@ -1,0 +1,340 @@
+fileFormatVersion: 2
+guid: 8071625344354657654433221100ff
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+  - serializedVersion: 2
+    name: Poseidon_Emote_0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 16
+      height: 16
+    alignment: 0
+    pivot: {x: 0.5, y: 0.5}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    outline: []
+    physicsShape: []
+    tessellationDetail: 0
+    bones: []
+    spriteID: 30618f408b334ba38d0ee8319560ba82
+    internalID: -2139080448
+    customPivot: {x: 0, y: 0}
+    indices: 
+    edges: []
+    weights: []
+  - serializedVersion: 2
+    name: Poseidon_Emote_1
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 0
+      width: 16
+      height: 16
+    alignment: 0
+    pivot: {x: 0.5, y: 0.5}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    outline: []
+    physicsShape: []
+    tessellationDetail: 0
+    bones: []
+    spriteID: e48d630edf414e5c83c47f6fc569585d
+    internalID: -2139080447
+    customPivot: {x: 0, y: 0}
+    indices: 
+    edges: []
+    weights: []
+  - serializedVersion: 2
+    name: Poseidon_Emote_2
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 0
+      width: 16
+      height: 16
+    alignment: 0
+    pivot: {x: 0.5, y: 0.5}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    outline: []
+    physicsShape: []
+    tessellationDetail: 0
+    bones: []
+    spriteID: cede5c3dfe744f44b2746257e87d6d6e
+    internalID: -2139080446
+    customPivot: {x: 0, y: 0}
+    indices: 
+    edges: []
+    weights: []
+  - serializedVersion: 2
+    name: Poseidon_Emote_3
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 0
+      width: 16
+      height: 16
+    alignment: 0
+    pivot: {x: 0.5, y: 0.5}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    outline: []
+    physicsShape: []
+    tessellationDetail: 0
+    bones: []
+    spriteID: e1738f2856a441938dddadc44f28d5d0
+    internalID: -2139080445
+    customPivot: {x: 0, y: 0}
+    indices: 
+    edges: []
+    weights: []
+  - serializedVersion: 2
+    name: Poseidon_Emote_4
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 0
+      width: 16
+      height: 16
+    alignment: 0
+    pivot: {x: 0.5, y: 0.5}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    outline: []
+    physicsShape: []
+    tessellationDetail: 0
+    bones: []
+    spriteID: 383408c82b5a4628ae43e076fe81226d
+    internalID: -2139080444
+    customPivot: {x: 0, y: 0}
+    indices: 
+    edges: []
+    weights: []
+  - serializedVersion: 2
+    name: Poseidon_Emote_5
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 0
+      width: 16
+      height: 16
+    alignment: 0
+    pivot: {x: 0.5, y: 0.5}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    outline: []
+    physicsShape: []
+    tessellationDetail: 0
+    bones: []
+    spriteID: df6e3cfdedd84a54895353f073a71b26
+    internalID: -2139080443
+    customPivot: {x: 0, y: 0}
+    indices: 
+    edges: []
+    weights: []
+  - serializedVersion: 2
+    name: Poseidon_Emote_6
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 0
+      width: 16
+      height: 16
+    alignment: 0
+    pivot: {x: 0.5, y: 0.5}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    outline: []
+    physicsShape: []
+    tessellationDetail: 0
+    bones: []
+    spriteID: 6bae00ae667442e0855b11cb5506917d
+    internalID: -2139080442
+    customPivot: {x: 0, y: 0}
+    indices: 
+    edges: []
+    weights: []
+  - serializedVersion: 2
+    name: Poseidon_Emote_7
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 0
+      width: 16
+      height: 16
+    alignment: 0
+    pivot: {x: 0.5, y: 0.5}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    outline: []
+    physicsShape: []
+    tessellationDetail: 0
+    bones: []
+    spriteID: e36a5d9a3a1f489281b37937f6e9146e
+    internalID: -2139080441
+    customPivot: {x: 0, y: 0}
+    indices: 
+    edges: []
+    weights: []
+  - serializedVersion: 2
+    name: Poseidon_Emote_8
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 0
+      width: 16
+      height: 16
+    alignment: 0
+    pivot: {x: 0.5, y: 0.5}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    outline: []
+    physicsShape: []
+    tessellationDetail: 0
+    bones: []
+    spriteID: 4797f8a11b2145089bb72ab6a05a6a69
+    internalID: -2139080440
+    customPivot: {x: 0, y: 0}
+    indices: 
+    edges: []
+    weights: []
+  - serializedVersion: 2
+    name: Poseidon_Emote_9
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 0
+      width: 16
+      height: 16
+    alignment: 0
+    pivot: {x: 0.5, y: 0.5}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    outline: []
+    physicsShape: []
+    tessellationDetail: 0
+    bones: []
+    spriteID: 96436aea54ae4ee9832b9cdcc34efbe6
+    internalID: -2139080439
+    customPivot: {x: 0, y: 0}
+    indices: 
+    edges: []
+    weights: []
+  - serializedVersion: 2
+    name: Poseidon_Emote_10
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 0
+      width: 16
+      height: 16
+    alignment: 0
+    pivot: {x: 0.5, y: 0.5}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    outline: []
+    physicsShape: []
+    tessellationDetail: 0
+    bones: []
+    spriteID: fdb2dff3de9745a09bde7314bf5e4386
+    internalID: -2139080438
+    customPivot: {x: 0, y: 0}
+    indices: 
+    edges: []
+    weights: []
+  outline: []
+  physicsShape: []
+  bones: []
+  spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:

@@ -2,8 +2,7 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// Keeps time to the beat — like a metronome.
-/// Other scripts ask: "Did we just hit a beat?" and "How good was the timing?"
+/// Keeps time to the beat — synced to background music when available.
 /// </summary>
 [RequireComponent(typeof(AudioSource))]
 public class BeatConductor : MonoBehaviour
@@ -19,7 +18,7 @@ public class BeatConductor : MonoBehaviour
     public static BeatConductor Instance { get; private set; }
 
     [Header("Timing")]
-    public float bpm = 80f;
+    public float bpm = 120f;
 
     [Tooltip("Within this many seconds = Perfect")]
     public float perfectWindowSeconds = 0.08f;
@@ -35,11 +34,14 @@ public class BeatConductor : MonoBehaviour
 
     public event Action OnBeat;
 
-    private AudioSource _audioSource;
+    private AudioSource _tickSource;
+    private AudioSource _musicSyncSource;
+    private float _musicBeatOffset;
     private float _tickVolume = 0.7f;
     private float _secondsPerBeat;
     private float _nextBeatTime;
     private float _lastBeatTime;
+    private int _musicBeatIndex = -1;
     private bool _isRunning;
 
     public float SecondsPerBeat => _secondsPerBeat;
@@ -53,7 +55,7 @@ public class BeatConductor : MonoBehaviour
         }
 
         Instance = this;
-        _audioSource = GetComponent<AudioSource>();
+        _tickSource = GetComponent<AudioSource>();
         RecalculateBeatLength();
     }
 
@@ -77,6 +79,18 @@ public class BeatConductor : MonoBehaviour
     private void Update()
     {
         if (!_isRunning) return;
+
+        if (GameSettings.Instance != null)
+        {
+            GameSettings.Instance.EnsureMusicPlaying();
+        }
+
+        if (IsMusicSyncActive())
+        {
+            UpdateMusicSyncedBeats();
+            return;
+        }
+
         if (Time.time < _nextBeatTime) return;
 
         _lastBeatTime = _nextBeatTime;
@@ -86,12 +100,10 @@ public class BeatConductor : MonoBehaviour
         OnBeat?.Invoke();
     }
 
-    /// <summary>
-    /// How close the current moment is to the last beat.
-    /// </summary>
     public BeatRating RateInput()
     {
-        float difference = Mathf.Abs(Time.time - _lastBeatTime);
+        float difference = GetSecondsFromNearestBeat();
+        if (difference < 0f) return BeatRating.Miss;
 
         if (difference <= perfectWindowSeconds) return BeatRating.Perfect;
         if (difference <= goodWindowSeconds) return BeatRating.Good;
@@ -99,9 +111,6 @@ public class BeatConductor : MonoBehaviour
         return BeatRating.Miss;
     }
 
-    /// <summary>
-    /// Quick check used by jump/shoot bonuses — Good or Perfect counts as on-beat.
-    /// </summary>
     public bool IsOnBeat()
     {
         BeatRating rating = RateInput();
@@ -124,10 +133,57 @@ public class BeatConductor : MonoBehaviour
         _tickVolume = Mathf.Clamp01(volume);
     }
 
+    public void SetMusicSyncSource(AudioSource musicSource, float beatOffset)
+    {
+        _musicSyncSource = musicSource;
+        _musicBeatOffset = beatOffset;
+        _musicBeatIndex = -1;
+    }
+
     public void ResetBeatClock()
     {
         _lastBeatTime = -999f;
         _nextBeatTime = Time.time + _secondsPerBeat;
+        _musicBeatIndex = -1;
+    }
+
+    private bool IsMusicSyncActive()
+    {
+        return _musicSyncSource != null && _musicSyncSource.isPlaying && _musicSyncSource.clip != null;
+    }
+
+    private float GetSongBeatTime()
+    {
+        return _musicSyncSource.time - _musicBeatOffset;
+    }
+
+    private float GetSecondsFromNearestBeat()
+    {
+        if (IsMusicSyncActive())
+        {
+            float songBeatTime = GetSongBeatTime();
+            if (songBeatTime < 0f) return -1f;
+
+            float phase = songBeatTime % _secondsPerBeat;
+            return Mathf.Min(phase, _secondsPerBeat - phase);
+        }
+
+        return Mathf.Abs(Time.time - _lastBeatTime);
+    }
+
+    private void UpdateMusicSyncedBeats()
+    {
+        float songBeatTime = GetSongBeatTime();
+        if (songBeatTime < 0f) return;
+
+        int beatIndex = Mathf.FloorToInt(songBeatTime / _secondsPerBeat);
+        if (beatIndex <= _musicBeatIndex) return;
+
+        _musicBeatIndex = beatIndex;
+        _lastBeatTime = Time.time;
+
+        PlayTick();
+        OnBeat?.Invoke();
     }
 
     private void RecalculateBeatLength()
@@ -138,6 +194,6 @@ public class BeatConductor : MonoBehaviour
     private void PlayTick()
     {
         if (tickClip == null) return;
-        _audioSource.PlayOneShot(tickClip, _tickVolume);
+        _tickSource.PlayOneShot(tickClip, _tickVolume);
     }
 }

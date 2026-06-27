@@ -1,13 +1,8 @@
-Custom Audio Folder
-===================
+Match Music
+===========
 
-Drag your audio files (.wav, .mp3, .ogg) into this folder.
+FIGHT_MUSIC_OrchestraOfNoir.mp3 — loops during matches.
 
-Then in Unity:
-1. Select GameController in the scene
-2. Find the Game Settings component
-3. Assign:
-   - Background Music = your song (loops during match)
-   - Metronome Tick = short click sound on each beat
-
-Adjust Music Volume and Tick Volume sliders in Game Settings.
+Rhythm duels and on-beat bonuses sync to this track via GameController > Game Settings:
+- Rhythm Bpm (default 120)
+- Music Beat Offset — shift if beats feel early/late vs the song

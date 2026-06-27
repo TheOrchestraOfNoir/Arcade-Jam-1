@@ -127,6 +127,11 @@ public class RhythmDuelManager : MonoBehaviour
         PlayerDirectionInput.ResetStickMemory();
         GameState.Instance.gameState = GameState.GameStateEnum.RhythmDuel;
 
+        if (GameSettings.Instance != null)
+        {
+            GameSettings.Instance.EnsureMusicPlaying();
+        }
+
         if (_readyView != null)
         {
             _readyView.ShowRhythmDuel();
@@ -155,6 +160,7 @@ public class RhythmDuelManager : MonoBehaviour
 
         _playerOneScoredThisBeat = false;
         _playerTwoScoredThisBeat = false;
+        PlayerDirectionInput.ResetStickMemory();
         _currentDirection = PickRandomDirection();
         _beatsShown++;
 

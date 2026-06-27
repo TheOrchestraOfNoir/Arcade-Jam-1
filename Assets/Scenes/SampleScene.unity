@@ -2403,7 +2403,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 46842d881b8678f45bdb0eaa6292e650, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2501,11 +2501,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a8c1d2e4b569708091a2b3c4d5e6f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 80
+  bpm: 120
   perfectWindowSeconds: 0.08
   goodWindowSeconds: 0.14
   badWindowSeconds: 0.2
-  tickClip: {fileID: 0}
+  tickClip: {fileID: 8300000, guid: 46842d881b8678f45bdb0eaa6292e650, type: 3}
 --- !u!114 &1449816638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2518,7 +2518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e2d9f4a1b8c5630d2e1f0a9b8c7d6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beatsPerDuel: 4
+  beatsPerDuel: 12
   enableAutoDuels: 1
   autoDuelEveryBeats: 48
   manualDuelCooldownBeats: 8
@@ -2552,14 +2552,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b8c7d6e5f4321098765432fedcba01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rhythmBpm: 80
-  minBpm: 60
-  maxBpm: 120
+  rhythmBpm: 120
+  musicBeatOffset: 0
   backgroundMusic: {fileID: 0}
   metronomeTick: {fileID: 0}
   menuLogo: {fileID: 21300000, guid: d3c4b5a6978890123456789abcdef012, type: 3}
-  musicVolume: 0.5
-  tickVolume: 0.7
+  rhythmCloudSprite: {fileID: 21300000, guid: 71625344354657654433221100ffeed1, type: 3}
+  musicVolume: 0.65
+  tickVolume: 0.35
 --- !u!1 &1471630727
 GameObject:
   m_ObjectHideFlags: 0
@@ -3132,6 +3132,14 @@ PrefabInstance:
       value: Death
       objectReference: {fileID: 0}
     - target: {fileID: 6695096346546838470, guid: 9fd780bb39da6654780b0aa3592392b7, type: 3}
+      propertyPath: m_Size.y
+      value: 0.44582188
+      objectReference: {fileID: 0}
+    - target: {fileID: 6695096346546838470, guid: 9fd780bb39da6654780b0aa3592392b7, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.27708906
+      objectReference: {fileID: 0}
+    - target: {fileID: 6695096346546838470, guid: 9fd780bb39da6654780b0aa3592392b7, type: 3}
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
@@ -3141,7 +3149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6977191587504418763, guid: 9fd780bb39da6654780b0aa3592392b7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3.8834
+      value: 5.566077
       objectReference: {fileID: 0}
     - target: {fileID: 6977191587504418763, guid: 9fd780bb39da6654780b0aa3592392b7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3149,7 +3157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6977191587504418763, guid: 9fd780bb39da6654780b0aa3592392b7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: -1.65
       objectReference: {fileID: 0}
     - target: {fileID: 6977191587504418763, guid: 9fd780bb39da6654780b0aa3592392b7, type: 3}
       propertyPath: m_LocalPosition.z

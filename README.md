@@ -13,11 +13,11 @@ Local 2-player Greek mythology platformer — **Zeus vs Poseidon** — with rhyt
 | **Hits** | Explosion | `Effects/Explosion.gif` |
 | **Menu** | Game logo | `UI/GameLogo.png` |
 
-Art lives in `Assets/Art/`. Source files were imported from `gameimageassets` on the Desktop. Sprites swap automatically when you move, jump, or enter a rhythm duel (`PlayerCharacterVisual.cs`).
+Art lives in `Assets/Art/`. Animated GIFs are exported to sprite strips in `Assets/Resources/Animations/` and play automatically (walk, jump, shoot, rhythm emote, fireball, explosion).
 
 ## What is in the game so far
 
-1. **Main menu** — Title screen with full controls, rhythm speed slider (60–120 BPM), and **Start Game**. Use `[` / `]` to nudge speed. Press Space, Enter, or either Jump key to start.
+1. **Main menu** — Title screen with logo, full controls, and **Start Game**. Press Space, Enter, or either Jump key to start.
 2. **Ready screen** — Both players press Jump to start the match.
 3. **Platformer fight** — Move, jump, aim in 4 directions, shoot bullets. Avoid spikes and pits.
 4. **Health** — Each player starts with 3 HP. Hazards and losing a rhythm duel cost 1 HP.
@@ -29,18 +29,22 @@ Art lives in `Assets/Art/`. Source files were imported from `gameimageassets` on
 
 ## Custom audio
 
-1. Drop `.wav`, `.mp3`, or `.ogg` files into `Assets/Audio/`.
-2. Select **GameController** in the scene.
-3. On **Game Settings**, assign:
-   - **Background Music** — loops during a match
-   - **Metronome Tick** — short click on each beat (optional)
-4. Adjust **Music Volume** and **Tick Volume** as needed.
+Match music: `Assets/Audio/FIGHT_MUSIC_OrchestraOfNoir.mp3` (Orchestra of Noir fight theme).
 
-The main menu shows whether custom clips are loaded.
+The rhythm system **syncs to the song** during matches — duels, note timing, and on-beat bonuses follow the music at **120 BPM** by default.
+
+To fine-tune sync in Unity, select **GameController → Game Settings**:
+- **Rhythm Bpm** — raise/lower if beats feel early or late (try 118–122)
+- **Music Beat Offset** — nudge if the first beat should start slightly into the track
+- **Music Volume** — loudness of the fight theme
 
 ## Rhythm speed
 
-Default tempo is **80 BPM** (slower than before). Change it on the main menu slider before starting, or on **Game Settings** / **Beat Conductor** in the Inspector.
+Default tempo is **120 BPM**, synced to the fight music on **Game Settings** / **Beat Conductor**.
+
+## In-game controls HUD
+
+During matches, a compact controls panel appears in the **bottom-left corner**. Rhythm duels use the **cloud** at the top of the screen — arrows fall from the cloud toward the hit line.
 
 ## Controls (one keyboard, two players)
 
