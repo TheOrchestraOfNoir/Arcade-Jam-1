@@ -32,14 +32,47 @@ public class ReadyView : MonoBehaviour {
 
     private const float NoteSpawnY = 220f;
     private const float NoteHitY = -40f;
+
+    private MainMenuView _mainMenuView;
     
     private void Start()
     {
-        if (startScreen != null) startScreen.SetActive(true);
+        if (startScreen != null) startScreen.SetActive(false);
         if (inMatchScreen != null) inMatchScreen.SetActive(false);
         if (gameOverScreen != null) gameOverScreen.SetActive(false);
 
         BuildDuelUI();
+        BuildMainMenu();
+
+        if (GameState.Instance != null && GameState.Instance.gameState == GameState.GameStateEnum.MainMenu)
+        {
+            ShowMainMenu();
+        }
+    }
+
+    public void ShowMainMenu()
+    {
+        if (_mainMenuView != null) _mainMenuView.Show();
+        if (startScreen != null) startScreen.SetActive(false);
+        if (inMatchScreen != null) inMatchScreen.SetActive(false);
+        if (gameOverScreen != null) gameOverScreen.SetActive(false);
+        if (_duelPanel != null) _duelPanel.SetActive(false);
+    }
+
+    public void ShowGetReady()
+    {
+        if (_mainMenuView != null) _mainMenuView.Hide();
+        if (startScreen != null) startScreen.SetActive(true);
+        if (inMatchScreen != null) inMatchScreen.SetActive(false);
+        if (gameOverScreen != null) gameOverScreen.SetActive(false);
+    }
+
+    public void ResetReadyDisplay()
+    {
+        if (backgroundPlayerOne != null) backgroundPlayerOne.color = Color.white;
+        if (backgroundPlayerTwo != null) backgroundPlayerTwo.color = Color.white;
+        if (readyTextMeshProPlayerOne != null) readyTextMeshProPlayerOne.text = "Press Jump to ready up";
+        if (readyTextMeshProPlayerTwo != null) readyTextMeshProPlayerTwo.text = "Press Jump to ready up";
     }
 
     public void SetReady(string player) {
@@ -58,11 +91,13 @@ public class ReadyView : MonoBehaviour {
     }
 
     public void SetInMatch() {
+        if (_mainMenuView != null) _mainMenuView.Hide();
         if (startScreen != null) startScreen.SetActive(false);
         if (inMatchScreen != null) inMatchScreen.SetActive(true);
     }
 
     public void SetInGameOver(string player) {
+        if (_mainMenuView != null) _mainMenuView.Hide();
         if (startScreen != null) startScreen.SetActive(false);
         if (inMatchScreen != null) inMatchScreen.SetActive(false);
         if (gameOverScreen != null) gameOverScreen.SetActive(true);
@@ -170,6 +205,20 @@ public class ReadyView : MonoBehaviour {
         note.arrowText = noteText;
         note.destroyBelowY = NoteHitY - 80f;
         note.Setup(arrowText, fallSpeed);
+    }
+
+    private void BuildMainMenu()
+    {
+        if (startScreen == null) return;
+
+        Transform canvas = startScreen.transform.parent;
+        if (canvas == null) return;
+
+        TMP_FontAsset font = healthPlayerOne != null ? healthPlayerOne.font : null;
+
+        _mainMenuView = gameObject.AddComponent<MainMenuView>();
+        _mainMenuView.Build(canvas, font);
+        _mainMenuView.Hide();
     }
 
     private void BuildDuelUI() {

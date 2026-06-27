@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerActions : MonoBehaviour {
     public string playerCount = "1";
@@ -36,7 +35,28 @@ public class PlayerActions : MonoBehaviour {
         if (GameState.Instance == null) return;
 
         switch (GameState.Instance.gameState) {
-            
+            case GameState.GameStateEnum.MainMenu: {
+                MainMenuView menu = FindObjectOfType<MainMenuView>();
+                if (Input.GetKeyDown(KeyCode.LeftBracket) && menu != null)
+                {
+                    menu.AdjustBpm(-5f);
+                }
+                if (Input.GetKeyDown(KeyCode.RightBracket) && menu != null)
+                {
+                    menu.AdjustBpm(5f);
+                }
+
+                bool startPressed = Input.GetKeyDown(KeyCode.Return)
+                    || Input.GetKeyDown(KeyCode.KeypadEnter)
+                    || Input.GetButtonDown(GameState.Instance.jumpButton + playerCount);
+
+                if (startPressed && menu != null)
+                {
+                    menu.TryStartGame();
+                }
+                break;
+            }
+
             case GameState.GameStateEnum.GetReady: {
                 if (Input.GetButtonDown(GameState.Instance.jumpButton + playerCount)) {
                     GameState.Instance.SetReady(playerCount);
@@ -80,8 +100,13 @@ public class PlayerActions : MonoBehaviour {
             }
 
             case GameState.GameStateEnum.GameOver: {
-                if (Input.GetButtonDown(GameState.Instance.jumpButton + playerCount)) {
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                if (Input.GetButtonDown(GameState.Instance.jumpButton + playerCount)
+                    || Input.GetKeyDown(KeyCode.Return))
+                {
+                    if (GameState.Instance != null)
+                    {
+                        GameState.Instance.ReturnToMainMenu();
+                    }
                 }
                 break;
             }

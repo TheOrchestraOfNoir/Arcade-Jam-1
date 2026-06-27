@@ -667,7 +667,7 @@ PrefabInstance:
     - target: {fileID: 6619282410973480501, guid: 7ac9264d82428ee40b3bd3e1da6bab53, type: 3}
       propertyPath: jumpSprite
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 21300000, guid: cde55d96117df8642a8f4e2e1b35027b, type: 3}
     - target: {fileID: 6619282410973480501, guid: 7ac9264d82428ee40b3bd3e1da6bab53, type: 3}
       propertyPath: walkSprite
       value: 
@@ -2323,6 +2323,7 @@ GameObject:
   - component: {fileID: 1449816637}
   - component: {fileID: 1449816638}
   - component: {fileID: 1449816639}
+  - component: {fileID: 1449816640}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -2500,10 +2501,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a8c1d2e4b569708091a2b3c4d5e6f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 120
-  perfectWindowSeconds: 0.05
-  goodWindowSeconds: 0.1
-  badWindowSeconds: 0.15
+  bpm: 80
+  perfectWindowSeconds: 0.08
+  goodWindowSeconds: 0.14
+  badWindowSeconds: 0.2
   tickClip: {fileID: 0}
 --- !u!114 &1449816638
 MonoBehaviour:
@@ -2519,7 +2520,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beatsPerDuel: 4
   enableAutoDuels: 1
-  autoDuelEveryBeats: 32
+  autoDuelEveryBeats: 48
   manualDuelCooldownBeats: 8
 --- !u!114 &1449816639
 MonoBehaviour:
@@ -2539,6 +2540,26 @@ MonoBehaviour:
   buffDuration: 5
   speedBuffMultiplier: 1.5
   shootBuffMultiplier: 0.5
+--- !u!114 &1449816640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449816632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b8c7d6e5f4321098765432fedcba01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rhythmBpm: 80
+  minBpm: 60
+  maxBpm: 120
+  backgroundMusic: {fileID: 0}
+  metronomeTick: {fileID: 0}
+  menuLogo: {fileID: 21300000, guid: d3c4b5a6978890123456789abcdef012, type: 3}
+  musicVolume: 0.5
+  tickVolume: 0.7
 --- !u!1 &1471630727
 GameObject:
   m_ObjectHideFlags: 0
@@ -3685,7 +3706,7 @@ Transform:
   m_GameObject: {fileID: 2021307455}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.09, y: 0.29, z: 0}
+  m_LocalPosition: {x: 0.09, y: 0.29, z: 77}
   m_LocalScale: {x: 0.80878115, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

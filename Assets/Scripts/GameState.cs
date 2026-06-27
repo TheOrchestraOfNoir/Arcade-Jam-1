@@ -32,6 +32,7 @@ public class GameState : MonoBehaviour
 
     // Defines the possible operational states of the match flow
     public enum GameStateEnum {
+        MainMenu,
         GetReady,
         InMatch,
         RhythmDuel,
@@ -56,7 +57,7 @@ public class GameState : MonoBehaviour
 
     private void Start()
     {
-        gameState = GameStateEnum.GetReady;
+        gameState = GameStateEnum.MainMenu;
     }
 
     // Update is called once per frame
@@ -64,14 +65,19 @@ public class GameState : MonoBehaviour
     {
         // Monitor core match transitions based on current game phases
         switch (gameState) {
-            
+            case GameStateEnum.MainMenu:
+                break;
+
             // Check if both players are flagged as ready to begin gameplay
             case GameStateEnum.GetReady: {
                 if (_playerOneReady && _playerTwoReady) {
-                    // Transition to active match state
                     gameState = GameStateEnum.InMatch;
-                    
-                    // Notify the UI to hide lobby options and display game elements
+
+                    if (GameSettings.Instance != null)
+                    {
+                        GameSettings.Instance.StartMatchAudio();
+                    }
+
                     if (_readyView != null) _readyView.SetInMatch();
                 }
                 break;
@@ -132,6 +138,48 @@ public class GameState : MonoBehaviour
     public bool CanHeal(string player) {
         if (player == "2") return playerTwoHealth < maxHealth;
         return playerOneHealth < maxHealth;
+    }
+
+    public void BeginReadyPhase()
+    {
+        _playerOneReady = false;
+        _playerTwoReady = false;
+        playerOneHealth = maxHealth;
+        playerTwoHealth = maxHealth;
+        gameState = GameStateEnum.GetReady;
+
+        if (_readyView != null)
+        {
+            _readyView.ShowGetReady();
+            _readyView.ResetReadyDisplay();
+            _readyView.UpdatePlayerHealth("1", playerOneHealth);
+            _readyView.UpdatePlayerHealth("2", playerTwoHealth);
+        }
+    }
+
+    public void ReturnToMainMenu()
+    {
+        if (GameSettings.Instance != null)
+        {
+            GameSettings.Instance.StopMatchAudio();
+        }
+
+        if (RhythmDuelManager.Instance != null)
+        {
+            RhythmDuelManager.Instance.ForceStop();
+        }
+
+        _playerOneReady = false;
+        _playerTwoReady = false;
+        playerOneHealth = maxHealth;
+        playerTwoHealth = maxHealth;
+        gameState = GameStateEnum.MainMenu;
+
+        if (_readyView != null)
+        {
+            _readyView.ShowMainMenu();
+            _readyView.ResetReadyDisplay();
+        }
     }
 
     // Commits the ready status flag for a player and triggers the corresponding visual state

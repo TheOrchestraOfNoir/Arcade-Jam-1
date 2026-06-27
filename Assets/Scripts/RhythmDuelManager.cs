@@ -99,6 +99,19 @@ public class RhythmDuelManager : MonoBehaviour
         BeginDuel();
     }
 
+    public void ForceStop()
+    {
+        CancelInvoke(nameof(CloseDuelPanel));
+        _duelActive = false;
+        _beatsSinceLastDuel = 0;
+        _cooldownBeatsRemaining = 0;
+
+        if (_readyView != null)
+        {
+            _readyView.HideRhythmDuel();
+        }
+    }
+
     private void BeginDuel()
     {
         CancelInvoke(nameof(CloseDuelPanel));

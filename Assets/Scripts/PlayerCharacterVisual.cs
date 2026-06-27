@@ -9,6 +9,7 @@ public class PlayerCharacterVisual : MonoBehaviour
     public Sprite standSprite;
     public Sprite walkSprite;
     public Sprite jumpSprite;
+    public Sprite danceSprite;
 
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody;
@@ -31,7 +32,15 @@ public class PlayerCharacterVisual : MonoBehaviour
     {
         if (_spriteRenderer == null || _rigidbody == null) return;
         if (GameState.Instance == null) return;
-        if (GameState.Instance.gameState == GameState.GameStateEnum.RhythmDuel) return;
+
+        if (GameState.Instance.gameState == GameState.GameStateEnum.RhythmDuel)
+        {
+            if (danceSprite != null)
+            {
+                _spriteRenderer.sprite = danceSprite;
+            }
+            return;
+        }
 
         float horizontalSpeed = _rigidbody.velocity.x;
         float verticalSpeed = _rigidbody.velocity.y;

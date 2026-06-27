@@ -19,16 +19,16 @@ public class BeatConductor : MonoBehaviour
     public static BeatConductor Instance { get; private set; }
 
     [Header("Timing")]
-    public float bpm = 120f;
+    public float bpm = 80f;
 
     [Tooltip("Within this many seconds = Perfect")]
-    public float perfectWindowSeconds = 0.05f;
+    public float perfectWindowSeconds = 0.08f;
 
     [Tooltip("Within this many seconds = Good")]
-    public float goodWindowSeconds = 0.1f;
+    public float goodWindowSeconds = 0.14f;
 
     [Tooltip("Within this many seconds = Bad")]
-    public float badWindowSeconds = 0.15f;
+    public float badWindowSeconds = 0.2f;
 
     [Header("Sound (optional)")]
     public AudioClip tickClip;
@@ -36,6 +36,7 @@ public class BeatConductor : MonoBehaviour
     public event Action OnBeat;
 
     private AudioSource _audioSource;
+    private float _tickVolume = 0.7f;
     private float _secondsPerBeat;
     private float _nextBeatTime;
     private float _lastBeatTime;
@@ -60,7 +61,17 @@ public class BeatConductor : MonoBehaviour
     {
         _lastBeatTime = -999f;
         _nextBeatTime = Time.time + _secondsPerBeat;
-        _isRunning = true;
+        _isRunning = false;
+
+        if (GameSettings.Instance != null)
+        {
+            SetBpm(GameSettings.Instance.rhythmBpm);
+            if (GameSettings.Instance.metronomeTick != null)
+            {
+                tickClip = GameSettings.Instance.metronomeTick;
+            }
+            SetTickVolume(GameSettings.Instance.tickVolume);
+        }
     }
 
     private void Update()
@@ -102,6 +113,23 @@ public class BeatConductor : MonoBehaviour
         _isRunning = running;
     }
 
+    public void SetBpm(float newBpm)
+    {
+        bpm = Mathf.Max(1f, newBpm);
+        RecalculateBeatLength();
+    }
+
+    public void SetTickVolume(float volume)
+    {
+        _tickVolume = Mathf.Clamp01(volume);
+    }
+
+    public void ResetBeatClock()
+    {
+        _lastBeatTime = -999f;
+        _nextBeatTime = Time.time + _secondsPerBeat;
+    }
+
     private void RecalculateBeatLength()
     {
         _secondsPerBeat = 60f / bpm;
@@ -110,6 +138,6 @@ public class BeatConductor : MonoBehaviour
     private void PlayTick()
     {
         if (tickClip == null) return;
-        _audioSource.PlayOneShot(tickClip);
+        _audioSource.PlayOneShot(tickClip, _tickVolume);
     }
 }

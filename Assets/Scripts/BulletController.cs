@@ -17,6 +17,10 @@ public class BulletController : MonoBehaviour {
 
     // Movement speed of the bullet
     public int speed = 5;
+
+    [Header("Effects (optional)")]
+    public Sprite explosionSprite;
+    public float explosionLifetime = 0.35f;
     
     // Start is called before the first frame update
     private void Start()
@@ -70,7 +74,22 @@ public class BulletController : MonoBehaviour {
 
     // Triggered when the bullet collides with another 2D collider set to trigger
     private void OnTriggerEnter2D(Collider2D collision) {
-        // Destroy the bullet immediately upon impact
+        SpawnExplosion();
         Destroy(gameObject);
+    }
+
+    private void SpawnExplosion()
+    {
+        if (explosionSprite == null) return;
+
+        GameObject fx = new GameObject("Explosion");
+        fx.transform.position = transform.position;
+        fx.transform.localScale = Vector3.one * 1.5f;
+
+        SpriteRenderer renderer = fx.AddComponent<SpriteRenderer>();
+        renderer.sprite = explosionSprite;
+        renderer.sortingOrder = 10;
+
+        Destroy(fx, explosionLifetime);
     }
 }
