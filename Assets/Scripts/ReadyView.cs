@@ -1,83 +1,244 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ReadyView : MonoBehaviour {
     
-    // UI Panels for different game states
     public GameObject startScreen;
     public GameObject inMatchScreen;
     public GameObject gameOverScreen;
     
-    // UI elements for Player 1 lobby status
     public Image backgroundPlayerOne;
     public TextMeshProUGUI readyTextMeshProPlayerOne;
     
-    // UI elements for Player 2 lobby status
     public Image backgroundPlayerTwo;
     public TextMeshProUGUI readyTextMeshProPlayerTwo;
     
-    // Text elements to display current health points during the match
     public TextMeshProUGUI healthPlayerOne;
     public TextMeshProUGUI healthPlayerTwo;
 
-    // Text element displaying the final winner on the game over screen
     public TextMeshProUGUI playerWins;
     
-    // Visual indicator color applied to panels when a player becomes ready
     public Color backgroundColor = Color.green;
+
+    private GameObject _duelPanel;
+    private RectTransform _noteLane;
+    private TextMeshProUGUI _duelPromptText;
+    private TextMeshProUGUI _duelScorePlayerOne;
+    private TextMeshProUGUI _duelScorePlayerTwo;
+    private TextMeshProUGUI _duelFeedbackPlayerOne;
+    private TextMeshProUGUI _duelFeedbackPlayerTwo;
+    private TextMeshProUGUI _duelResultText;
+
+    private const float NoteSpawnY = 220f;
+    private const float NoteHitY = -40f;
     
-    // Start is called before the first frame update
     private void Start()
     {
-        // Enforce correct UI panel visibility at initial match launch
-        startScreen.SetActive(true);
-        inMatchScreen.SetActive(false);
-        gameOverScreen.SetActive(false);
+        if (startScreen != null) startScreen.SetActive(true);
+        if (inMatchScreen != null) inMatchScreen.SetActive(false);
+        if (gameOverScreen != null) gameOverScreen.SetActive(false);
+
+        BuildDuelUI();
     }
 
-    // Updates a specific player's UI indicators to reflect their ready status
     public void SetReady(string player) {
         switch (player) {
             case "1": {
-                backgroundPlayerOne.color = backgroundColor;
-                readyTextMeshProPlayerOne.text = "Player 1 ready!";
+                if (backgroundPlayerOne != null) backgroundPlayerOne.color = backgroundColor;
+                if (readyTextMeshProPlayerOne != null) readyTextMeshProPlayerOne.text = "Player 1 ready!";
                 break;   
             }
             case "2":{
-                backgroundPlayerTwo.color = backgroundColor;
-                readyTextMeshProPlayerTwo.text = "Player 2 ready!";
+                if (backgroundPlayerTwo != null) backgroundPlayerTwo.color = backgroundColor;
+                if (readyTextMeshProPlayerTwo != null) readyTextMeshProPlayerTwo.text = "Player 2 ready!";
                 break;   
             }
         }
     }
 
-    // Disables pre-game UI panels and enables active gameplay overlays
     public void SetInMatch() {
-        startScreen.SetActive(false);
-        inMatchScreen.SetActive(true);
+        if (startScreen != null) startScreen.SetActive(false);
+        if (inMatchScreen != null) inMatchScreen.SetActive(true);
     }
 
-    // Displays the post-game summary panel and announces the winning player
     public void SetInGameOver(string player) {
-        startScreen.SetActive(false);
-        gameOverScreen.SetActive(true);
-        playerWins.text = "Player " + player + " wins!";
+        if (startScreen != null) startScreen.SetActive(false);
+        if (inMatchScreen != null) inMatchScreen.SetActive(false);
+        if (gameOverScreen != null) gameOverScreen.SetActive(true);
+        if (_duelPanel != null) _duelPanel.SetActive(false);
+        if (playerWins != null) playerWins.text = "Player " + player + " wins!";
     }
 
-    // Refreshes the on-screen health point value for the specified player
     public void UpdatePlayerHealth(string player, int health) {
         switch (player) {
             case "1": {
-                healthPlayerOne.text = health.ToString();
+                if (healthPlayerOne != null) healthPlayerOne.text = health.ToString();
                 break;   
             }
             case "2":{
-                healthPlayerTwo.text = health.ToString();
+                if (healthPlayerTwo != null) healthPlayerTwo.text = health.ToString();
                 break;   
             }
         }
+    }
+
+    public void ShowRhythmDuel() {
+        if (_duelPanel == null) return;
+        _duelPanel.SetActive(true);
+        _duelResultText.text = "RHYTHM DUEL!";
+        ClearLaneNotes();
+        ClearFeedback();
+    }
+
+    public void HideRhythmDuel() {
+        if (_duelPanel == null) return;
+        ClearLaneNotes();
+        _duelPanel.SetActive(false);
+    }
+
+    public void UpdateDuelPrompt(string arrowText) {
+        if (_duelPromptText == null) return;
+        _duelPromptText.text = arrowText;
+    }
+
+    public void UpdateDuelScore(int playerOneScore, int playerTwoScore) {
+        if (_duelScorePlayerOne == null || _duelScorePlayerTwo == null) return;
+        _duelScorePlayerOne.text = "P1 score: " + playerOneScore;
+        _duelScorePlayerTwo.text = "P2 score: " + playerTwoScore;
+    }
+
+    public void ShowDuelResult(string message) {
+        if (_duelResultText == null) return;
+        _duelResultText.text = message;
+    }
+
+    public void ShowPlayerFeedback(string player, BeatConductor.BeatRating rating) {
+        TextMeshProUGUI target = player == "2" ? _duelFeedbackPlayerTwo : _duelFeedbackPlayerOne;
+        if (target == null) return;
+
+        switch (rating) {
+            case BeatConductor.BeatRating.Perfect:
+                target.text = "PERFECT!";
+                target.color = Color.yellow;
+                break;
+            case BeatConductor.BeatRating.Good:
+                target.text = "GOOD";
+                target.color = Color.green;
+                break;
+            case BeatConductor.BeatRating.Bad:
+                target.text = "BAD";
+                target.color = Color.gray;
+                break;
+            default:
+                target.text = "MISS";
+                target.color = Color.red;
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Spawns a falling arrow note that reaches the hit line in one beat.
+    /// </summary>
+    public void SpawnDuelNote(string arrowText) {
+        if (_noteLane == null) return;
+
+        float secondsPerBeat = BeatConductor.Instance != null
+            ? BeatConductor.Instance.SecondsPerBeat
+            : 0.5f;
+
+        float travelDistance = NoteSpawnY - NoteHitY;
+        float fallSpeed = travelDistance / secondsPerBeat;
+
+        GameObject noteObject = new GameObject("Rhythm Note");
+        noteObject.transform.SetParent(_noteLane, false);
+
+        RectTransform noteRect = noteObject.AddComponent<RectTransform>();
+        noteRect.sizeDelta = new Vector2(80f, 80f);
+        noteRect.anchoredPosition = new Vector2(0f, NoteSpawnY);
+
+        TextMeshProUGUI noteText = noteObject.AddComponent<TextMeshProUGUI>();
+        noteText.text = arrowText;
+        noteText.fontSize = 64;
+        noteText.alignment = TextAlignmentOptions.Center;
+        noteText.color = Color.cyan;
+        if (healthPlayerOne != null && healthPlayerOne.font != null) {
+            noteText.font = healthPlayerOne.font;
+        }
+
+        RhythmNote note = noteObject.AddComponent<RhythmNote>();
+        note.arrowText = noteText;
+        note.destroyBelowY = NoteHitY - 80f;
+        note.Setup(arrowText, fallSpeed);
+    }
+
+    private void BuildDuelUI() {
+        if (_duelPanel != null || startScreen == null) return;
+
+        Transform canvas = startScreen.transform.parent;
+
+        _duelPanel = new GameObject("Rhythm Duel Panel");
+        _duelPanel.transform.SetParent(canvas, false);
+
+        RectTransform panelRect = _duelPanel.AddComponent<RectTransform>();
+        panelRect.anchorMin = Vector2.zero;
+        panelRect.anchorMax = Vector2.one;
+        panelRect.offsetMin = Vector2.zero;
+        panelRect.offsetMax = Vector2.zero;
+
+        Image panelBackground = _duelPanel.AddComponent<Image>();
+        panelBackground.color = new Color(0f, 0f, 0f, 0.75f);
+
+        GameObject laneObject = new GameObject("Note Lane");
+        laneObject.transform.SetParent(_duelPanel.transform, false);
+        _noteLane = laneObject.AddComponent<RectTransform>();
+        _noteLane.anchorMin = new Vector2(0.5f, 0.5f);
+        _noteLane.anchorMax = new Vector2(0.5f, 0.5f);
+        _noteLane.sizeDelta = new Vector2(120f, 500f);
+        _noteLane.anchoredPosition = new Vector2(0f, 0f);
+
+        _duelResultText = CreateDuelText("RHYTHM DUEL!", 32, new Vector2(0f, 220f));
+        _duelPromptText = CreateDuelText("?", 72, new Vector2(0f, NoteHitY));
+        _duelScorePlayerOne = CreateDuelText("P1 score: 0", 24, new Vector2(-220f, -180f));
+        _duelScorePlayerTwo = CreateDuelText("P2 score: 0", 24, new Vector2(220f, -180f));
+        _duelFeedbackPlayerOne = CreateDuelText("", 22, new Vector2(-220f, -140f));
+        _duelFeedbackPlayerTwo = CreateDuelText("", 22, new Vector2(220f, -140f));
+
+        _duelPanel.SetActive(false);
+    }
+
+    private TextMeshProUGUI CreateDuelText(string startingText, float fontSize, Vector2 anchoredPosition) {
+        GameObject textObject = new GameObject(startingText + " Text");
+        textObject.transform.SetParent(_duelPanel.transform, false);
+
+        RectTransform rect = textObject.AddComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.sizeDelta = new Vector2(400f, 80f);
+        rect.anchoredPosition = anchoredPosition;
+
+        TextMeshProUGUI text = textObject.AddComponent<TextMeshProUGUI>();
+        text.text = startingText;
+        text.fontSize = fontSize;
+        text.alignment = TextAlignmentOptions.Center;
+        text.color = Color.white;
+
+        if (healthPlayerOne != null && healthPlayerOne.font != null) {
+            text.font = healthPlayerOne.font;
+        }
+
+        return text;
+    }
+
+    private void ClearLaneNotes() {
+        if (_noteLane == null) return;
+        for (int i = _noteLane.childCount - 1; i >= 0; i--) {
+            Destroy(_noteLane.GetChild(i).gameObject);
+        }
+    }
+
+    private void ClearFeedback() {
+        if (_duelFeedbackPlayerOne != null) _duelFeedbackPlayerOne.text = "";
+        if (_duelFeedbackPlayerTwo != null) _duelFeedbackPlayerTwo.text = "";
     }
 }

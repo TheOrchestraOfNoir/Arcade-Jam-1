@@ -28,10 +28,9 @@ public class PlayerWeapon : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
-        // Only allow weapon aiming if the game is currently in a match
+        if (GameState.Instance == null || _playerActions == null || weapon == null) return;
         if (GameState.Instance.gameState != GameState.GameStateEnum.InMatch) return;
         
-        // Get raw input values (-1, 0, or 1) using the player's specific control axis
         int horizontal = (int) Input.GetAxisRaw(GameState.Instance.horizontalAxis + _playerActions.playerCount);
         int vertical = (int) Input.GetAxisRaw(GameState.Instance.verticalAxis + _playerActions.playerCount);
             

@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
-        // Only allow movement if the game is currently in a match
+        if (GameState.Instance == null || _playerActions == null || _rigidbody2D == null) return;
         if (GameState.Instance.gameState != GameState.GameStateEnum.InMatch) return;
         
         // Get horizontal input value (-1, 0, or 1) using the player's specific control axis

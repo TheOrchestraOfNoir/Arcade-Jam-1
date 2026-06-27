@@ -33,6 +33,7 @@ public class GameState : MonoBehaviour
     public enum GameStateEnum {
         GetReady,
         InMatch,
+        RhythmDuel,
         GameOver,
     }
     
@@ -40,24 +41,21 @@ public class GameState : MonoBehaviour
     public GameStateEnum gameState;
     
     
-    // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
-        // Enforce the Singleton pattern to prevent duplicate GameState instances
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        // Establish this object as the persistent global instance
         Instance = this;
-        
-        // Initialize the game loop into the pre-match ready phase
+        _readyView = GetComponent<ReadyView>();
+    }
+
+    private void Start()
+    {
         gameState = GameStateEnum.GetReady;
-        
-        // Cache the ReadyView component responsible for user interface updates
-        _readyView = gameObject.GetComponent<ReadyView>();
     }
 
     // Update is called once per frame
@@ -73,19 +71,22 @@ public class GameState : MonoBehaviour
                     gameState = GameStateEnum.InMatch;
                     
                     // Notify the UI to hide lobby options and display game elements
-                    _readyView.SetInMatch();
+                    if (_readyView != null) _readyView.SetInMatch();
                 }
                 break;
             }
             
-            // Monitor player health values to determine match termination conditions
-            case GameStateEnum.InMatch: {
+            // Monitor player health during platforming and rhythm duels
+            case GameStateEnum.InMatch:
+            case GameStateEnum.RhythmDuel: {
                 if (playerOneHealth <= 0 || playerTwoHealth <= 0) {
                     // Transition to end match state
                     gameState = GameStateEnum.GameOver;
                     
                     // Trigger game over screen, passing the winning player number ("1" or "2")
-                    _readyView.SetInGameOver(playerOneHealth <= 0 ? "2" : "1");
+                    if (_readyView != null) {
+                        _readyView.SetInGameOver(playerOneHealth <= 0 ? "2" : "1");
+                    }
                 }
                 break;
             }
@@ -101,12 +102,12 @@ public class GameState : MonoBehaviour
         switch (player) {
             case "1": {
                 playerOneHealth--;
-                _readyView.UpdatePlayerHealth(player, playerOneHealth);
+                if (_readyView != null) _readyView.UpdatePlayerHealth(player, playerOneHealth);
                 break;
             }
             case "2": {
                 playerTwoHealth--;
-                _readyView.UpdatePlayerHealth(player, playerTwoHealth);
+                if (_readyView != null) _readyView.UpdatePlayerHealth(player, playerTwoHealth);
                 break;
             }
         }
@@ -117,12 +118,12 @@ public class GameState : MonoBehaviour
         switch (player) {
             case "1": {
                 _playerOneReady = true;
-                _readyView.SetReady(player);
+                if (_readyView != null) _readyView.SetReady(player);
                 break;
             }
             case "2": {
                 _playerTwoReady = true;
-                _readyView.SetReady(player);
+                if (_readyView != null) _readyView.SetReady(player);
                 break;
             }
         }

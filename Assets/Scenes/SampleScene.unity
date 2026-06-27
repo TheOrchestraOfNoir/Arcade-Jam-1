@@ -754,7 +754,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8433664199821009620, guid: 7ac9264d82428ee40b3bd3e1da6bab53, type: 3}
       propertyPath: playerCount
-      value: 2
+      value: '2'
       objectReference: {fileID: 0}
     - target: {fileID: 8433664199821009620, guid: 7ac9264d82428ee40b3bd3e1da6bab53, type: 3}
       propertyPath: bulletColor.a
@@ -1713,9 +1713,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Controls\nXbox | Keyboard \nJoystick | WASD\nJump - A | Space\nAction
-    1 - X | R\nAction 2 - B | T\nAction 3 - Y | Y\nAction 4 - RB | U\nAction 5 -
-    LB | I"
+  m_text: "Player 1\nMove/Aim: WASD\nJump: Space\nShoot: R\nRhythm Duel: Y\n\nGamepad:
+    Stick + A/X/Y\n\nTip: Jump/Shoot on the\nbeat for a bonus!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2289,6 +2288,9 @@ GameObject:
   - component: {fileID: 1449816634}
   - component: {fileID: 1449816633}
   - component: {fileID: 1449816635}
+  - component: {fileID: 1449816636}
+  - component: {fileID: 1449816637}
+  - component: {fileID: 1449816638}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -2357,6 +2359,90 @@ MonoBehaviour:
   healthPlayerTwo: {fileID: 337584326}
   playerWins: {fileID: 542133219}
   backgroundColor: {r: 0, g: 1, b: 0, a: 0.5176471}
+--- !u!82 &1449816636
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449816632}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1449816637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449816632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a8c1d2e4b569708091a2b3c4d5e6f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bpm: 120
+  perfectWindowSeconds: 0.05
+  goodWindowSeconds: 0.1
+  badWindowSeconds: 0.15
+  tickClip: {fileID: 0}
+--- !u!114 &1449816638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449816632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e2d9f4a1b8c5630d2e1f0a9b8c7d6e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beatsPerDuel: 4
+  enableAutoDuels: 1
+  autoDuelEveryBeats: 32
+  manualDuelCooldownBeats: 8
 --- !u!1 &1471630727
 GameObject:
   m_ObjectHideFlags: 0
@@ -2548,9 +2634,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Controls\nXbox | Keyboard \nJoystick | Arrow Keys\nJump - A | Right Shift\nAction
-    1 - X | N\nAction 2 - B | M\nAction 3 - Y | ,\nAction 4 - RB | .\nAction 5 -
-    LB | /"
+  m_text: "Player 2\nMove/Aim: Arrows or IJKL\nJump: Right Shift\nShoot: N\nRhythm
+    Duel: ,\n\nGamepad 2:\nStick + A/X/Y\n\nTip: Jump/Shoot on the\nbeat for a bonus!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

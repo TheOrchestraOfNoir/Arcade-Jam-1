@@ -128,8 +128,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054b16a6316f9fd4397691fb2beea80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerCount: 1
-  _start: {x: 0, y: 0, z: 0}
+  playerCount: 1
+  xObject: {fileID: 0}
+  bulletColor: {r: 1, g: 1, b: 1, a: 1}
+  layersToExclude:
+    serializedVersion: 2
+    m_Bits: 0
+  spawnInterval: 2
 --- !u!114 &5761915463337607820
 MonoBehaviour:
   m_ObjectHideFlags: 0
