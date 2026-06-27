@@ -16,9 +16,9 @@ public class GameState : MonoBehaviour
     private bool _playerTwoReady = false;
 
     // Remaining health points for each player
-    public int maxHealth = 3;
-    public int playerOneHealth = 3;
-    public int playerTwoHealth = 3;
+    public int maxHealth = 8;
+    public int playerOneHealth = 8;
+    public int playerTwoHealth = 8;
     
     // Input axis and button string prefixes used to map multiplayer controls dynamically
     public string horizontalAxis = "Horizontal_";
