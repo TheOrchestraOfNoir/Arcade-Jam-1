@@ -16,6 +16,7 @@ public class PlayerActions : MonoBehaviour {
     public float currentTime = 0f;
     
     private bool _canShoot = true;
+    private PlayerBuffs _playerBuffs;
     
     private void Start()
     {
@@ -24,6 +25,11 @@ public class PlayerActions : MonoBehaviour {
         _start = gameObject.transform.position;
         _rigidbody = GetComponent<Rigidbody2D>();
         _playerWeapon = GetComponent<PlayerWeapon>();
+        _playerBuffs = GetComponent<PlayerBuffs>();
+
+        if (SpecialEffectManager.Instance != null) {
+            SpecialEffectManager.Instance.RegisterPlayer(this);
+        }
     }
 
     private void Update() {
@@ -46,6 +52,12 @@ public class PlayerActions : MonoBehaviour {
                 if (Input.GetButtonDown(GameState.Instance.actionY + playerCount)) {
                     if (RhythmDuelManager.Instance != null) {
                         RhythmDuelManager.Instance.StartDuel();
+                    }
+                }
+
+                if (Input.GetButtonDown(GameState.Instance.actionB + playerCount)) {
+                    if (SpecialEffectManager.Instance != null) {
+                        SpecialEffectManager.Instance.TryClaim(playerCount);
                     }
                 }
 
@@ -80,7 +92,7 @@ public class PlayerActions : MonoBehaviour {
         if (!_canShoot) return;
         if (xObject == null || _playerWeapon == null || _playerWeapon.weapon == null) return;
 
-        currentTime = spawnInterval;
+        currentTime = spawnInterval * GetShootIntervalMultiplier();
         _canShoot = false;
 
         Transform spawnPoint = _playerWeapon.weapon.transform;
@@ -101,9 +113,14 @@ public class PlayerActions : MonoBehaviour {
 
             if (BeatConductor.Instance != null && BeatConductor.Instance.IsOnBeat()) {
                 bullet.speed = Mathf.RoundToInt(bullet.speed * 1.5f);
-                currentTime = spawnInterval * 0.5f;
+                currentTime = spawnInterval * GetShootIntervalMultiplier() * 0.5f;
             }
         }
+    }
+
+    private float GetShootIntervalMultiplier() {
+        if (_playerBuffs == null) return 1f;
+        return _playerBuffs.shootIntervalMultiplier;
     }
     
     private void OnTriggerEnter2D(Collider2D collision) { 

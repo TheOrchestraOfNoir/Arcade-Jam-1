@@ -16,6 +16,7 @@ public class GameState : MonoBehaviour
     private bool _playerTwoReady = false;
 
     // Remaining health points for each player
+    public int maxHealth = 3;
     public int playerOneHealth = 3;
     public int playerTwoHealth = 3;
     
@@ -111,6 +112,26 @@ public class GameState : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void HealPlayer(string player, int amount) {
+        switch (player) {
+            case "1": {
+                playerOneHealth = Mathf.Min(maxHealth, playerOneHealth + amount);
+                if (_readyView != null) _readyView.UpdatePlayerHealth(player, playerOneHealth);
+                break;
+            }
+            case "2": {
+                playerTwoHealth = Mathf.Min(maxHealth, playerTwoHealth + amount);
+                if (_readyView != null) _readyView.UpdatePlayerHealth(player, playerTwoHealth);
+                break;
+            }
+        }
+    }
+
+    public bool CanHeal(string player) {
+        if (player == "2") return playerTwoHealth < maxHealth;
+        return playerOneHealth < maxHealth;
     }
 
     // Commits the ready status flag for a player and triggers the corresponding visual state

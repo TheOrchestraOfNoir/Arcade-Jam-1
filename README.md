@@ -1,6 +1,16 @@
 # Arcade Jam 2
 
-Local 2-player platformer with rhythm duels.
+Local 2-player Greek mythology platformer — **Zeus vs Poseidon** — with rhythm duels.
+
+## Characters & art
+
+| Player | Character | Assets used |
+|--------|-----------|-------------|
+| **Player 1** | Zeus | Stand, Walk, Jump GIFs |
+| **Player 2** | Poseidon | Stand + Jump GIF |
+| **Ground** | Tile | `GroundTile.png` |
+
+Art lives in `Assets/Art/`. Sprites swap automatically when you move or jump (`PlayerCharacterVisual.cs`).
 
 ## What is in the game so far
 
@@ -11,6 +21,7 @@ Local 2-player platformer with rhythm duels.
 5. **Auto duels** — A duel also starts automatically about every 32 beats (~16 seconds).
 6. **On-beat bonus** — Jump or shoot on the beat for a stronger jump or faster shot.
 7. **Game over** — At 0 HP, the other player wins. Press Jump to restart.
+8. **Random special bonus** — A yellow **!** appears above one or both players. Press **Special (B)** in time for a random reward.
 
 ## Controls (one keyboard, two players)
 
@@ -25,6 +36,7 @@ Player 1 and Player 2 use **different keys** so both can play on the same keyboa
 | Jump | Space | A button |
 | Shoot | R | X button |
 | Start rhythm duel | Y | Y button |
+| **Special bonus** | **T** | **B button** |
 | Ready / Restart | Space | A button |
 
 ### Player 2
@@ -36,7 +48,19 @@ Player 1 and Player 2 use **different keys** so both can play on the same keyboa
 | Jump | Right Shift | Right Shift | A button |
 | Shoot | N | N | X button |
 | Start rhythm duel | , (comma) | , (comma) | Y button |
+| **Special bonus** | **M** | **M** | **B button** |
 | Ready / Restart | Right Shift | Right Shift | A button |
+
+### Special bonus (random)
+
+When a yellow **!** floats above your character, press **Special** quickly (within ~4 seconds):
+
+| Result | What it does |
+|--------|----------------|
+| **STRIKE!** | Opponent loses 1 HP |
+| **HEAL!** | You gain 1 HP (max 3) |
+| **SPEED!** | Faster movement for 5 seconds |
+| **RAPID!** | Faster shooting for 5 seconds |
 
 ### During a rhythm duel
 

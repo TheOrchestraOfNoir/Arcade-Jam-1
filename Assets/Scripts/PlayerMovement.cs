@@ -10,12 +10,12 @@ public class PlayerMovement : MonoBehaviour {
     
     // Reference to the player actions script to determine player index/ID
     private PlayerActions _playerActions;
+    private PlayerBuffs _playerBuffs;
     
-    // Start is called before the first frame update
     private void Start() {
-        // Cache the Rigidbody2D and PlayerActions components attached to this GameObject
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _playerActions = GetComponent<PlayerActions>();
+        _playerBuffs = GetComponent<PlayerBuffs>();
     }
 
     // Update is called once per frame
@@ -27,6 +27,9 @@ public class PlayerMovement : MonoBehaviour {
         float horizontal = Input.GetAxisRaw(GameState.Instance.horizontalAxis + _playerActions.playerCount);
             
         // Apply horizontal velocity while preserving the current vertical velocity
-        _rigidbody2D.velocity = new Vector2(horizontal * speed, _rigidbody2D.velocity.y);
+        float moveSpeed = speed;
+        if (_playerBuffs != null) moveSpeed *= _playerBuffs.speedMultiplier;
+
+        _rigidbody2D.velocity = new Vector2(horizontal * moveSpeed, _rigidbody2D.velocity.y);
     }
 }
